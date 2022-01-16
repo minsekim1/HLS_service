@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>HLS Player</title>
+  </head>
+
+  <body>
+    <!-- <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script> -->
+    <video id="video" loop playsinline autoplay muted width="500" height="500" controls ></video>
+    <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+    <script>
+      var video = document.getElementById("video");
+      var videoSrc = "https://circlin-hls.s3.ap-northeast-2.amazonaws.com/lala1/output.m3u8";
+      // var videoSrc = "s3주소/bunny.m3u8";
+      if (Hls.isSupported()) {
+        var hls = new Hls();
+        hls.loadSource(videoSrc);
+        hls.attachMedia(video);
+        hls.on(Hls.Events.MANIFEST_PARSED, function () {
+          video.muted = "muted";
+          video.autoplay = "autoplay";
+          video.playsinline = "true";
+          video.play();
+        });
+      } else if (video.canPlayType("application/vnd.apple.mpegurl")) {
+        video.src = videoSrc;
+        video.addEventListener("loadedmetadata", function () {
+          video.muted = "muted";
+          video.autoplay = "autoplay";
+          video.playsinline = "true";
+          video.play();
+        });
+      }
+    </script>
+  </body>
+</html>
